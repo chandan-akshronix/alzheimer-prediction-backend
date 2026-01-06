@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 import numpy as np
 import tensorflow as tf
+import os
 import uuid
 from datetime import datetime
 from bson.objectid import ObjectId
@@ -12,21 +13,26 @@ import bcrypt
 from preprocessing import preprocess_image
 from models import UserCreate, UserUpdate, UserResponse
 from pymongo import MongoClient
-import os
 import base64
+import certifi
 
 
 # =========================
 # MongoDB Configuration
 # =========================
 
-
 MONGO_URI = os.getenv(
     "MONGO_URI",
-    "mongodb+srv://RohitBarshile:Rohit%40123@cluster0.elfzhpa.mongodb.net/"
+    "mongodb+srv://RohitBarshile:Rohit%40123@cluster0.elfzhpa.mongodb.net/?retryWrites=true&w=majority"
 )
 
-mongo_client = MongoClient(MONGO_URI)
+# Connect with SSL/TLS options for Docker compatibility
+mongo_client = MongoClient(
+    MONGO_URI,
+    tls=True,
+    tlsAllowInvalidCertificates=True,
+    serverSelectionTimeoutMS=10000
+)
 db = mongo_client["alzheimers_db"]
 predictions_collection = db["predictions"]
 users_collection = db["users"]
@@ -59,7 +65,8 @@ CLASS_NAMES = [
     "VeryMildDemented"
 ]
 
-model = tf.keras.models.load_model("my_model.h5")
+# Load the model - TensorFlow 2.16+ supports Keras 3 format natively
+model = tf.keras.models.load_model("my_model.h5", compile=False)
 LOADED_MODEL_FILENAME = "my_model.h5"
 
 

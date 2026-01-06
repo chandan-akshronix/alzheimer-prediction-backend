@@ -1,10 +1,26 @@
-fastapi==0.104.1
-uvicorn==0.24.0
-numpy==1.24.3
-tensorflow==2.13.0
-pymongo==4.6.0
-Pillow==10.0.0
-pydantic==2.5.0
-pydantic-extra-types==2.4.1
-bcrypt==4.1.1
+# Core API
+fastapi==0.109.0
+uvicorn==0.27.0
 python-multipart==0.0.6
+
+# ML/AI - TensorFlow 2.16+ includes Keras 3
+tensorflow==2.16.1
+numpy==1.26.4
+Pillow==10.2.0
+h5py==3.10.0
+
+# Database
+pymongo==4.6.0
+dnspython==2.4.2
+certifi==2024.2.2
+
+# Data Validation
+pydantic==2.5.3
+pydantic-extra-types==2.4.1
+email-validator==2.1.0
+
+# Security
+bcrypt==4.1.2
+
+# Utilities
+requests==2.31.0
